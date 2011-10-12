@@ -43,6 +43,7 @@ function init(position) {
 // Gets all cafes visible on the map.
 function retrievePlaces() {
   clearMarkers();
+  $("#cafeList").empty();
   
   var request = {
     bounds: map.getBounds(),
