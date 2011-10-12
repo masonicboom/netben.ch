@@ -31,7 +31,7 @@ GET /
 [x] put "Run test" button next to each cafe name
 [x] load M-Lab NDT applet in an invisible, centered, modal div
 [x] when "Run test" is pushed, display the div and start the NDT applet
-[] when applet is done, collect applet data and POST it along with cafe data to /tests/
+[x] when applet is done, collect applet data and POST it along with cafe data to /tests/
 
 POST /tests
 [] make action
