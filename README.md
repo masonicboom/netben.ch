@@ -51,10 +51,9 @@ GET /cafes/:id
 Models
 ------
 
-CoffeeShop
+Cafe
 id
-foursquare_id
-yelp_id
+name
 google_id
 latitude
 longitude
