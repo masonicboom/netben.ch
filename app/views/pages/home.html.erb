@@ -35,8 +35,18 @@ function init(position) {
   });
   infowindow = new google.maps.InfoWindow();
   placesService = new google.maps.places.PlacesService(map);
+
+  // Set event listeners to update the list of places when the map is moved.
+  google.maps.event.addListener(map, 'dragend', retrievePlaces);
+  google.maps.event.addListener(map, 'zoom_changed', retrievePlaces);
   
-  google.maps.event.addListener(map, 'bounds_changed', retrievePlaces);
+  // This listener is needed to get the initial list, but immediately removed
+  // to prevent flicker of markers because it's redundant with the other event
+  // listeners (above).
+  var handle = google.maps.event.addListener(map, 'tilesloaded', function() {
+    google.maps.event.removeListener(handle);
+    retrievePlaces();
+  });
 }
 
 
