@@ -3,10 +3,12 @@ Overview
 
 SF only to start.
 
-Notes
------
+Tools used:
 
-Google API access (for places): https://code.google.com/apis/console/#project:88963896438:access
+- Rails 3.1
+- HTML5 geolocation (diveintohtml5.com/geolocation.html)
+- Google Maps and Places APIs (https://code.google.com/apis/console/#project:88963896438:access)
+- Underscore.js templates (http://documentcloud.github.com/underscore/#template)
 
 
 Routing architecture
