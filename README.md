@@ -34,7 +34,7 @@ GET /
 [x] when applet is done, collect applet data and POST it along with cafe data to /tests/
 
 POST /tests
-[] make action
+[x] make action
 [] check DB for whether Cafe exists
   [] if not, create it
 [] record a TestResult, associated with the Cafe
