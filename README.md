@@ -6,6 +6,7 @@ SF only to start.
 Tools used:
 
 - Rails 3.1
+- RSpec (https://github.com/rspec/rspec-rails)
 - HTML5 geolocation (diveintohtml5.com/geolocation.html)
 - Google Maps and Places APIs (https://code.google.com/apis/console/#project:88963896438:access)
 - Underscore.js templates (http://documentcloud.github.com/underscore/#template)
