@@ -35,10 +35,10 @@ GET /
 
 POST /tests
 [x] make action
-[] check DB for whether Cafe exists
-  [] if not, create it
-[] record a TestResult, associated with the Cafe
-[] redirect to /cafes/:id when done
+[x] check DB for whether Cafe exists
+  [x] if not, create it
+[x] record a TestResult, associated with the Cafe
+[x] redirect to /cafes/:id when done
 
 GET /cafes/:id
 [] make action and page
