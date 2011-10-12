@@ -12,7 +12,7 @@ Welcome home.
 
 <div id="cafeList"></div>
 
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js"></script>
+<%= javascript_include_tag "underscore-min" %>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 
 <script type='text/javascript'>
@@ -61,7 +61,7 @@ function retrievePlaces() {
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      //console.log(results);
+      console.log(results);
       
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
@@ -84,12 +84,9 @@ function clearMarkers() {
 }
 
 
-_.templateSettings = {
-  interpolate : /\{\{(.+?)\}\}/g
-};
-var cafeListEntryTemplate = _.template("<div class='entry'>{{ name }}</div>");
+var cafeListEntryTemplate = _.template("<div class='entry'><%%= place.name %> <a href='javascript:runTest(\"<%%- place.name %>\", \"<%%= place.geometry.location.lat() %>\", \"<%%= place.geometry.location.lng() %>\", \"<%%= place.id %>\")'>run test</a></div>");
 function createListEntry(place) {
-  var entryHtml = cafeListEntryTemplate({ name: place.name });
+  var entryHtml = cafeListEntryTemplate({ place: place });
   $('#cafeList').append($(entryHtml));
 }
 
@@ -107,6 +104,12 @@ function createMarker(place) {
     infowindow.setContent(place.name);
     infowindow.open(map, this);
   });
+}
+
+
+// Run the bandwidth and speed test.
+function runTest(place) {
+  console.log("Testing: " + place.name);
 }
 
 
