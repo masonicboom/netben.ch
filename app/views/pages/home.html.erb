@@ -7,7 +7,32 @@ Welcome home.
   border: 1px solid #333;
   margin-top: 0.6em;
 }
+
+#ndtAppletBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.4;
+  z-index: 2;
+  display: none;
+}
+#ndtApplet {
+  z-index: 3;
+  width: 400px;
+  margin: auto;
+  margin-top: 100px;
+}
 </style>
+
+<div id="ndtAppletBackground">
+  <div id="ndtApplet">
+    <applet name="NDT" code=Tcpbw100.class codebase="http://ndt.iupui.donar.measurement-lab.org:7123" ARCHIVE="Tcpbw100.jar" width=400 height=400></applet>
+  </div>
+</div>
+
 <div id="map"></div>
 
 <div id="cafeList"></div>
@@ -61,7 +86,7 @@ function retrievePlaces() {
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log(results);
+      //console.log(results);
       
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
@@ -110,6 +135,7 @@ function createMarker(place) {
 // Run the bandwidth and speed test.
 function runTest(place) {
   console.log("Testing: " + place.name);
+  $("#ndtAppletBackground").toggle();
 }
 
 
