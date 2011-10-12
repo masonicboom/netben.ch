@@ -44,8 +44,7 @@ GET /cafes/:id
 [x] make action and page
 [] show location name
 [] put it on a map
-[] give range and average download bandwidth
-[] give range and average upload bandwidth
+[] to start, just list all associated TestResults in a table
 
 
 Models
