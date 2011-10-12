@@ -23,7 +23,7 @@ Todos
 GET /
 [x] make action and page
 [x] geolocate with HTML5
-[] after geolocation, query Google Places API (something like https://maps.googleapis.com/maps/api/place/search/json?location=37.7441,-122.4216&radius=200&types=cafe&sensor=false&key=AIzaSyCmidRRLg8qmZGlbqGgr3MyFj8OZ0DrZW8) and list nearby cafe names
+[x] after geolocation, query Google Places API (something like https://maps.googleapis.com/maps/api/place/search/json?location=37.7441,-122.4216&radius=200&types=cafe&sensor=false&key=AIzaSyCmidRRLg8qmZGlbqGgr3MyFj8OZ0DrZW8) and list nearby cafe names
 [] put "Run test" button next to each cafe name
 [] load M-Lab NDT applet in background
 [] when "Run test" is pushed, start the NDT applet http://www.internet2.edu/performance/ndt/api.html

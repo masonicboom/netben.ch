@@ -1,14 +1,104 @@
 Welcome home.
 
+<style type="text/css">
+#map {
+  height: 400px;
+  width: 600px;
+  border: 1px solid #333;
+  margin-top: 0.6em;
+}
+</style>
+<div id="map"></div>
+
+<div id="cafeList"></div>
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+
 <script type='text/javascript'>
 
-function geolocated(position) {
+var map;
+var infowindow;
+var placesService;
+var markersArray = [];
+
+
+function init(position) {
   var latitude = position.coords.latitude;
   var longitude = position.coords.longitude;
+  var location = new google.maps.LatLng(latitude, longitude);
   
-  document.writeln('You are at (' + latitude + ', ' + longitude + ')');
+  map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: location,
+    zoom: 16,
+  });
+  infowindow = new google.maps.InfoWindow();
+  placesService = new google.maps.places.PlacesService(map);
+  
+  google.maps.event.addListener(map, 'bounds_changed', retrievePlaces);
 }
 
-navigator.geolocation.getCurrentPosition(geolocated);
+
+// Gets all cafes visible on the map.
+function retrievePlaces() {
+  clearMarkers();
+  
+  var request = {
+    bounds: map.getBounds(),
+    types: ['cafe'],
+  };
+  placesService.search(request, function(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      //console.log(results);
+      
+      for (var i = 0; i < results.length; i++) {
+        var place = results[i];
+        createMarker(place); 
+        createListEntry(place)
+      }
+    }
+  });
+}
+
+
+// From http://code.google.com/apis/maps/documentation/javascript/overlays.html#RemovingOverlays.
+function clearMarkers() {
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
+    }
+    markersArray.length = 0;
+  }
+}
+
+
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g
+};
+var cafeListEntryTemplate = _.template("<div class='entry'>{{ name }}</div>");
+function createListEntry(place) {
+  var entryHtml = cafeListEntryTemplate({ name: place.name });
+  $('#cafeList').append($(entryHtml));
+}
+
+
+// Puts a marker on the map.
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+  markersArray.push(marker);
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+
+navigator.geolocation.getCurrentPosition(init);
 
 </script>
