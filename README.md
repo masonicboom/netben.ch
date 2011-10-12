@@ -46,6 +46,10 @@ GET /cafes/:id
 [] put it on a map
 [] to start, just list all associated TestResults in a table
 
+General
+[] move CSS out of views and into assets
+[] move JS out of views and into assets
+
 
 Models
 ------
