@@ -136,8 +136,42 @@ function createMarker(place) {
 function runTest(place) {
   console.log("Testing: " + place.name);
   $("#ndtAppletBackground").toggle();
+  var NDT = document.applets["NDT"];
+  
+  // Set up the function to POST results when the applet completes.
+  var waitOrSendResults = function() {
+    var isReady = NDT.isReady();
+    if (isReady == 'no') {
+      setTimeout(waitOrSendResults, 50);
+      return;
+    } else if (isReady == 'failed') {
+      console.log('Error running NDT applet.');
+    } else if (isReady == 'yes') {
+      // POST the results.
+      console.log('Done!');
+    } else {
+      console.log('This should never happen.');
+    }
+  }
+  
+  // Run the test, as soon as the applet loads.
+  var waitOrRunApplet = function() {
+    if (NDT.run_test === undefined) {
+      setTimeout(waitOrRunApplet, 50);
+      return;
+    }
+    
+    NDT.run_test();
+    waitOrSendResults();
+  }
+  waitOrRunApplet();
+  
 }
 
+// Hide the applet when the user clicks outside of it.
+$("#ndtAppletBackground").click(function(event) {
+  $("#ndtAppletBackground").toggle();
+});
 
 navigator.geolocation.getCurrentPosition(init);
 

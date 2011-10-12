@@ -10,6 +10,7 @@ Tools used:
 - HTML5 geolocation (diveintohtml5.com/geolocation.html)
 - Google Maps and Places APIs (https://code.google.com/apis/console/#project:88963896438:access)
 - Underscore.js templates (http://documentcloud.github.com/underscore/#template)
+- Measurement-Lab's NDT (http://www.internet2.edu/performance/ndt/api.html)
 
 
 Routing architecture
@@ -29,8 +30,7 @@ GET /
 [x] after geolocation, query Google Places API (something like https://maps.googleapis.com/maps/api/place/search/json?location=37.7441,-122.4216&radius=200&types=cafe&sensor=false&key=AIzaSyCmidRRLg8qmZGlbqGgr3MyFj8OZ0DrZW8) and list nearby cafe names
 [x] put "Run test" button next to each cafe name
 [x] load M-Lab NDT applet in an invisible, centered, modal div
-[] when "Run test" is pushed, display the div and start the NDT applet http://www.internet2.edu/performance/ndt/api.html
-[] display spinner while applet is running
+[x] when "Run test" is pushed, display the div and start the NDT applet
 [] when applet is done, collect applet data and POST it along with cafe data to /tests/
 
 POST /tests
