@@ -1,1 +1,14 @@
 Welcome home.
+
+<script type='text/javascript'>
+
+function geolocated(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  
+  document.writeln('You are at (' + latitude + ', ' + longitude + ')');
+}
+
+navigator.geolocation.getCurrentPosition(geolocated);
+
+</script>
