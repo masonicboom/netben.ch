@@ -62,4 +62,6 @@ longitude
 TestResult
 coffee_shop_id
 timestamp
-...basically everything from http://www.internet2.edu/performance/ndt/api.html
+upload_mbps
+download_mbps
+packet_loss_fraction
