@@ -41,7 +41,7 @@ POST /tests
 [x] redirect to /cafes/:id when done
 
 GET /cafes/:id
-[] make action and page
+[x] make action and page
 [] show location name
 [] put it on a map
 [] give range and average download bandwidth
