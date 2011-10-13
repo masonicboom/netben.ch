@@ -1,3 +1,10 @@
 // Place all the styles related to the Cafes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#map {
+  height: 400px;
+  width: 600px;
+  border: 1px solid #333;
+  margin-top: 0.6em;
+}
