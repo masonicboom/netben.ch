@@ -49,6 +49,11 @@ GET /cafes/:id
 General
 [] move CSS out of views and into assets
 [] move JS out of views and into assets
+[] make and put up logo
+[] design layout (header and footer)
+[] write intro copy for homepage
+[] design homepage
+[] design cafe page
 
 
 Models
