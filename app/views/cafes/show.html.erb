@@ -1,10 +1,11 @@
 <h1><%= @cafe.name %></h1>
 
 <div id="map"></div>
+<script type="text/javascript">
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-<script type='text/javascript'>
+$(document).ready(function() {
+  initMap();
+});
 
 function initMap() {
   var latitude = <%= @cafe.latitude %>;
