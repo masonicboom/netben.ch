@@ -57,49 +57,56 @@ function createMarker(place) {
 
 // Run the bandwidth and speed test.
 function runTest(place_name, place_latitude, place_longitude, place_google_id) {
+  
+  var NDT = document.applets["NDT"];
+  var ssid;
+  
+  // Set up the function to POST results when the applet completes.
+  var waitOrSendResults = function() {
+    var isReady = NDT.isReady();
+    if (isReady == 'no') {
+      setTimeout(waitOrSendResults, 50);
+      return;
+    } else if (isReady == 'failed') {
+      console.log('Error running NDT applet.');
+    } else if (isReady == 'yes') {
+      var uploadMbps = NDT.get_c2sspd();
+      var downloadMbps = NDT.get_s2cspd();
+      var lossRate = NDT.get_loss();
+
+      uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
+      // POST the results.
+      console.log('Done!');
+    } else {
+      console.log('This should never happen.');
+    }
+  }
+
+  // Run the test, as soon as the applet loads.
+  var waitOrRunApplet = function() {
+    if (NDT.run_test === undefined) {
+      setTimeout(waitOrRunApplet, 50);
+      return;
+    }
+
+    NDT.run_test();
+    waitOrSendResults();
+  }
+  
   function runActualTest(ssid) {
-    $("#ndtAppletBackground").toggle();
-    var NDT = document.applets["NDT"];
-
-    // Set up the function to POST results when the applet completes.
-    var waitOrSendResults = function() {
-      var isReady = NDT.isReady();
-      if (isReady == 'no') {
-        setTimeout(waitOrSendResults, 50);
-        return;
-      } else if (isReady == 'failed') {
-        console.log('Error running NDT applet.');
-      } else if (isReady == 'yes') {
-        var uploadMbps = NDT.get_c2sspd();
-        var downloadMbps = NDT.get_s2cspd();
-        var lossRate = NDT.get_loss();
-
-        uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
-        // POST the results.
-        console.log('Done!');
-      } else {
-        console.log('This should never happen.');
+    $("#ndt-dialog").dialog("option", {
+      open: function(event, ui) {
+        waitOrRunApplet();
       }
-    }
-
-    // Run the test, as soon as the applet loads.
-    var waitOrRunApplet = function() {
-      if (NDT.run_test === undefined) {
-        setTimeout(waitOrRunApplet, 50);
-        return;
-      }
-
-      NDT.run_test();
-      waitOrSendResults();
-    }
-    waitOrRunApplet();
+    });
+    $("#ndt-dialog").dialog("open");
   }
   
   // First, collect the network's SSID.
   $("#ssid-dialog").dialog("option", {
     buttons: {
       "Run test": function() {
-        var ssid = $(this).find("input[name='ssid']").val();
+        ssid = $(this).find("input[name='ssid']").val();
         $(this).dialog("close");
         runActualTest(ssid);
       }
