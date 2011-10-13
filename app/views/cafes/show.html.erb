@@ -29,15 +29,15 @@ function initMap() {
 <table>
   <thead>
     <tr>
-      <td>Recorded At</td>
+      <td>Recorded</td>
       <td>Upload Mbps</td>
       <td>Download Mbps</td>
       <td>Packet loss %</td>
     </tr>
   </thead>
-  <% @cafe.test_results.each do |result| %>
+  <% @cafe.test_results.find(:all, :order => 'created_at desc').each do |result| %>
   <tr>
-    <td><%= result.created_at %></td>
+    <td><%= time_ago_in_words result.created_at %> ago</td>
     <td><%= number_with_precision result.upload_mbps, :precision => 2 %></td>
     <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
     <td><%= number_to_percentage result.loss_rate %></td>
