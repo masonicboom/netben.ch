@@ -49,6 +49,7 @@ GET /cafes/:id
 General
 [x] move CSS out of views and into assets
 [x] move JS out of views and into assets
+[] require SSID (in the modal popup) before running benchmark, as a limited form of security
 [] make and put up logo
 [] design layout (header and footer)
 [] write intro copy for homepage
