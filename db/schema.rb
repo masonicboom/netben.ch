@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111012232919) do
+ActiveRecord::Schema.define(:version => 20111013172207) do
 
   create_table "cafes", :force => true do |t|
     t.string   "google_id"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20111012232919) do
     t.float    "loss_rate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ssid"
   end
 
 end

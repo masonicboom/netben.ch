@@ -8,13 +8,14 @@ class TestsController < ApplicationController
     raise ActiveRecord::RecordNotFound if params[:test_result][:upload_mbps].nil?
     raise ActiveRecord::RecordNotFound if params[:test_result][:download_mbps].nil?
     raise ActiveRecord::RecordNotFound if params[:test_result][:loss_rate].nil?
+    raise ActiveRecord::RecordNotFound if params[:test_result][:ssid].nil?
     
     cafe = Cafe.find_by_google_id(params[:cafe][:google_id])
     if cafe.nil?
       cafe = Cafe.create(params[:cafe])
     end
     
-    cafe.test_results.create(params[:test_result])
+    test_result = cafe.test_results.create(params[:test_result])
     
     redirect_to(cafe)
   end

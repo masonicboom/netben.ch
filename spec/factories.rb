@@ -10,4 +10,5 @@ Factory.define :test_result do |f|
   f.download_mbps 2.6
   f.upload_mbps 1.5
   f.loss_rate 0.04
+  f.ssid 'linksys'
 end

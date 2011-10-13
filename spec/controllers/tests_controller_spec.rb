@@ -9,13 +9,14 @@ describe TestsController do
         :upload_mbps => 3.4,
         :download_mbps => 6.3,
         :loss_rate => 0.13,
+        :ssid => 'linksys',
       },
       :cafe => {
         :google_id => '21341290ag93F',
         :name => 'Coffee House',
         :latitude => 37.7489,
         :longitude => -122.4281,
-      }
+      },
     }
     
     it 'should fail without upload_mbps' do
@@ -69,6 +70,14 @@ describe TestsController do
     it 'should fail without cafe longitude' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
       params[:cafe][:longitude] = nil
+      lambda do
+        post :create, params
+      end.should raise_error
+    end
+    
+    it 'should fail without SSID' do
+      params = Marshal.load(Marshal.dump(VALID_PARAMS))
+      params[:test_result][:ssid] = nil
       lambda do
         post :create, params
       end.should raise_error

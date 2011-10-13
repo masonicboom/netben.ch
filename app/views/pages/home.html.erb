@@ -6,6 +6,7 @@
   <input type="hidden" name="test_result[upload_mbps]" value="" />
   <input type="hidden" name="test_result[download_mbps]" value="" />
   <input type="hidden" name="test_result[loss_rate]" value="" />
+  <input type="hidden" name="test_result[ssid]" value="" />
   <input type="submit" value="Upload" />
 </form>
 
@@ -13,6 +14,11 @@
   <div id="ndtApplet">
     <applet name="NDT" code=Tcpbw100.class codebase="http://ndt.iupui.donar.measurement-lab.org:7123" ARCHIVE="Tcpbw100.jar" width=400 height=400></applet>
   </div>
+</div>
+
+<div id="ssid-dialog" title="Network name (SSID)">
+  Enter network name:
+  <input type="text" name="ssid" />
 </div>
 
 <div id="map"></div>
@@ -56,6 +62,11 @@ $("#ndtAppletBackground").click(function(event) {
 });
 
 navigator.geolocation.getCurrentPosition(init);
+
+$("#ssid-dialog").dialog({
+  modal: true,
+  autoOpen: false,
+});
 
 </script>
 

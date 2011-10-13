@@ -57,46 +57,60 @@ function createMarker(place) {
 
 // Run the bandwidth and speed test.
 function runTest(place_name, place_latitude, place_longitude, place_google_id) {
-  $("#ndtAppletBackground").toggle();
-  var NDT = document.applets["NDT"];
-  
-  // Set up the function to POST results when the applet completes.
-  var waitOrSendResults = function() {
-    var isReady = NDT.isReady();
-    if (isReady == 'no') {
-      setTimeout(waitOrSendResults, 50);
-      return;
-    } else if (isReady == 'failed') {
-      console.log('Error running NDT applet.');
-    } else if (isReady == 'yes') {
-      var uploadMbps = NDT.get_c2sspd();
-      var downloadMbps = NDT.get_s2cspd();
-      var lossRate = NDT.get_loss();
-      
-      uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate);
-      // POST the results.
-      console.log('Done!');
-    } else {
-      console.log('This should never happen.');
+  function runActualTest(ssid) {
+    $("#ndtAppletBackground").toggle();
+    var NDT = document.applets["NDT"];
+
+    // Set up the function to POST results when the applet completes.
+    var waitOrSendResults = function() {
+      var isReady = NDT.isReady();
+      if (isReady == 'no') {
+        setTimeout(waitOrSendResults, 50);
+        return;
+      } else if (isReady == 'failed') {
+        console.log('Error running NDT applet.');
+      } else if (isReady == 'yes') {
+        var uploadMbps = NDT.get_c2sspd();
+        var downloadMbps = NDT.get_s2cspd();
+        var lossRate = NDT.get_loss();
+
+        uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
+        // POST the results.
+        console.log('Done!');
+      } else {
+        console.log('This should never happen.');
+      }
     }
+
+    // Run the test, as soon as the applet loads.
+    var waitOrRunApplet = function() {
+      if (NDT.run_test === undefined) {
+        setTimeout(waitOrRunApplet, 50);
+        return;
+      }
+
+      NDT.run_test();
+      waitOrSendResults();
+    }
+    waitOrRunApplet();
   }
   
-  // Run the test, as soon as the applet loads.
-  var waitOrRunApplet = function() {
-    if (NDT.run_test === undefined) {
-      setTimeout(waitOrRunApplet, 50);
-      return;
+  // First, collect the network's SSID.
+  $("#ssid-dialog").dialog("option", {
+    buttons: {
+      "Run test": function() {
+        var ssid = $(this).find("input[name='ssid']").val();
+        $(this).dialog("close");
+        runActualTest(ssid);
+      }
     }
+  });
+  $("#ssid-dialog").dialog("open");
     
-    NDT.run_test();
-    waitOrSendResults();
-  }
-  waitOrRunApplet();
-  
 }
 
 
-function uploadTestResults(cafe_google_id, cafe_name, cafe_latitude, cafe_longitude, uploadMbps, downloadMbps, lossRate) {
+function uploadTestResults(cafe_google_id, cafe_name, cafe_latitude, cafe_longitude, uploadMbps, downloadMbps, lossRate, ssid) {
   $("#testResults>input[name='cafe[google_id]']").val(cafe_google_id);
   $("#testResults>input[name='cafe[name]']").val(cafe_name);
   $("#testResults>input[name='cafe[latitude]']").val(cafe_latitude);
@@ -104,5 +118,6 @@ function uploadTestResults(cafe_google_id, cafe_name, cafe_latitude, cafe_longit
   $("#testResults>input[name='test_result[upload_mbps]']").val(uploadMbps);
   $("#testResults>input[name='test_result[download_mbps]']").val(downloadMbps);
   $("#testResults>input[name='test_result[loss_rate]']").val(lossRate);
+  $("#testResults>input[name='test_result[ssid]']").val(ssid);
   $("#testResults").submit();
 }

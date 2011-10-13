@@ -31,6 +31,7 @@ function initMap() {
   <thead>
     <tr>
       <td>Recorded</td>
+      <td>SSID (Network)</td>
       <td>Upload Mbps</td>
       <td>Download Mbps</td>
       <td>Packet loss %</td>
@@ -39,6 +40,7 @@ function initMap() {
   <% @cafe.test_results.find(:all, :order => 'created_at desc').each do |result| %>
   <tr>
     <td><%= time_ago_in_words result.created_at %> ago</td>
+    <td><%= result.ssid %></td>
     <td><%= number_with_precision result.upload_mbps, :precision => 2 %></td>
     <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
     <td><%= number_to_percentage result.loss_rate %></td>
