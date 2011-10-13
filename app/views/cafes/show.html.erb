@@ -1,0 +1,54 @@
+<h1><%= @cafe.name %></h1>
+
+<style type="text/css">
+#map {
+  height: 400px;
+  width: 600px;
+  border: 1px solid #333;
+  margin-top: 0.6em;
+}
+</style>
+
+<div id="map"></div>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script type='text/javascript'>
+
+function initMap() {
+  var latitude = <%= @cafe.latitude %>;
+  var longitude = <%= @cafe.longitude %>;
+  var location = new google.maps.LatLng(latitude, longitude);
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: location,
+    zoom: 16,
+  });
+
+  var marker = new google.maps.Marker({
+    map: map,
+    position: location
+  });
+}
+
+</script>
+
+<table>
+  <thead>
+    <tr>
+      <td>Recorded At</td>
+      <td>Upload Mbps</td>
+      <td>Download Mbps</td>
+      <td>Packet loss %</td>
+    </tr>
+  </thead>
+  <% @cafe.test_results.each do |result| %>
+  <tr>
+    <td><%= result.created_at %></td>
+    <td><%= number_with_precision result.upload_mbps, :precision => 2 %></td>
+    <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
+    <td><%= number_to_percentage result.loss_rate %></td>
+  </tr>
+  <% end %>
+</table>

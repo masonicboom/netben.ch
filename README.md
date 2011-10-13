@@ -42,9 +42,9 @@ POST /tests
 
 GET /cafes/:id
 [x] make action and page
-[] show location name
-[] put it on a map
-[] to start, just list all associated TestResults in a table
+[x] show location name
+[x] put it on a map
+[x] to start, just list all associated TestResults in a table
 
 General
 [] move CSS out of views and into assets
