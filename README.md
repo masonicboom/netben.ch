@@ -51,7 +51,7 @@ General
 [x] move JS out of views and into assets
 [x] require SSID (in the modal popup) before running benchmark, as a limited form of security
 [x] make and put up logo
-[] design layout (header and footer)
+[] design layout (header and footer; vectorized SF skyline as the top of the footer)
 [] write intro copy for homepage
 [] design homepage
 [] design cafe page

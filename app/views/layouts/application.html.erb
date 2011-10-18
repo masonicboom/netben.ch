@@ -10,8 +10,11 @@
 </head>
 <body>
 
-<%= image_tag "logo.png", :width => 400 %>
+<%= image_tag "logo.png", :width => 400, :id => "logo" %>
+
+<div id="container">
 <%= yield %>
+</div>
 
 </body>
 </html>

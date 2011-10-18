@@ -2,11 +2,43 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$map-height: 340px;
+$list-margin: 5px;
+
+#main {
+  width: 700px;
+}
+
 #map {
-  height: 400px;
-  width: 600px;
-  border: 1px solid #333;
-  margin-top: 0.6em;
+  height: $map-height;
+  width: 400px;
+  border: 0;
+  margin: 0;
+  float: left;
+}
+
+#cafeList {
+  margin: $list-margin;
+  padding: 0;
+  float: left;
+  width: 290px;
+  height: $map-height - $list-margin*2;
+  overflow-y: auto;
+  
+  li {
+    padding: 1ex;
+    border: solid 2px transparent;
+    
+    &:hover {
+      border: solid 2px #DDD;
+      background-color: #FFF;
+    }
+    
+    a { float: right; }
+  }
+}
+
+.box {
 }
 
 #testResults {

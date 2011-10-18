@@ -12,7 +12,7 @@ function initMap() {
   var longitude = <%= @cafe.longitude %>;
   var location = new google.maps.LatLng(latitude, longitude);
 
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById("map"), {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: location,
     zoom: 16,
@@ -37,7 +37,7 @@ function initMap() {
       <td>Packet loss %</td>
     </tr>
   </thead>
-  <% @cafe.test_results.find(:all, :order => 'created_at desc').each do |result| %>
+  <% @cafe.test_results.find(:all, :order => "created_at desc").each do |result| %>
   <tr>
     <td><%= time_ago_in_words result.created_at %> ago</td>
     <td><%= result.ssid %></td>

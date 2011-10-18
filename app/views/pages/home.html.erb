@@ -20,7 +20,13 @@
   <input type="text" name="ssid" />
 </div>
 
-<div id="map"></div>
+<div id="main" class="box">
+  <div id="map"></div>
+  <ul id="cafeList"></ul>
+  <div style="clear: both;"></div>
+</div>
+
+
 <script type="text/javascript">
 
 var map;
@@ -34,7 +40,7 @@ function init(position) {
   var longitude = position.coords.longitude;
   var location = new google.maps.LatLng(latitude, longitude);
   
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById("map"), {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: location,
     zoom: 16,
@@ -43,13 +49,13 @@ function init(position) {
   placesService = new google.maps.places.PlacesService(map);
 
   // Set event listeners to update the list of places when the map is moved.
-  google.maps.event.addListener(map, 'dragend', retrievePlaces);
-  google.maps.event.addListener(map, 'zoom_changed', retrievePlaces);
+  google.maps.event.addListener(map, "dragend", retrievePlaces);
+  google.maps.event.addListener(map, "zoom_changed", retrievePlaces);
   
   // This listener is needed to get the initial list, but immediately removed
   // to prevent flicker of markers because it's redundant with the other event
   // listeners (above).
-  var handle = google.maps.event.addListener(map, 'tilesloaded', function() {
+  var handle = google.maps.event.addListener(map, "tilesloaded", function() {
     google.maps.event.removeListener(handle);
     retrievePlaces();
   });
@@ -72,5 +78,3 @@ $("#ndt-dialog").dialog({
 });
 
 </script>
-
-<div id="cafeList"></div>

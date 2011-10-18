@@ -5,7 +5,7 @@ function retrievePlaces() {
   
   var request = {
     bounds: map.getBounds(),
-    types: ['cafe'],
+    types: ["cafe"],
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -32,10 +32,10 @@ function clearMarkers() {
 }
 
 
-var cafeListEntryTemplate = _.template("<div class='entry'><%= place.name %> <a href='javascript:runTest(\"<%- place.name %>\", \"<%= place.geometry.location.lat() %>\", \"<%= place.geometry.location.lng() %>\", \"<%= place.id %>\")'>run test</a></div>");
+var cafeListEntryTemplate = _.template("<li class='entry'><span><%= place.name %></span><a href='javascript:runTest(\"<%- place.name %>\", \"<%= place.geometry.location.lat() %>\", \"<%= place.geometry.location.lng() %>\", \"<%= place.id %>\")'>run test</a></li>");
 function createListEntry(place) {
   var entryHtml = cafeListEntryTemplate({ place: place });
-  $('#cafeList').append($(entryHtml));
+  $("#cafeList").append($(entryHtml));
 }
 
 
@@ -48,7 +48,7 @@ function createMarker(place) {
   });
   markersArray.push(marker);
 
-  google.maps.event.addListener(marker, 'click', function() {
+  google.maps.event.addListener(marker, "click", function() {
     infowindow.setContent(place.name);
     infowindow.open(map, this);
   });
@@ -64,21 +64,21 @@ function runTest(place_name, place_latitude, place_longitude, place_google_id) {
   // Set up the function to POST results when the applet completes.
   var waitOrSendResults = function() {
     var isReady = NDT.isReady();
-    if (isReady == 'no') {
+    if (isReady == "no") {
       setTimeout(waitOrSendResults, 50);
       return;
-    } else if (isReady == 'failed') {
-      console.log('Error running NDT applet.');
-    } else if (isReady == 'yes') {
+    } else if (isReady == "failed") {
+      console.log("Error running NDT applet.");
+    } else if (isReady == "yes") {
       var uploadMbps = NDT.get_c2sspd();
       var downloadMbps = NDT.get_s2cspd();
       var lossRate = NDT.get_loss();
 
       uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
       // POST the results.
-      console.log('Done!');
+      console.log("Done!");
     } else {
-      console.log('This should never happen.');
+      console.log("This should never happen.");
     }
   }
 
