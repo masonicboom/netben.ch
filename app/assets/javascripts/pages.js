@@ -5,17 +5,19 @@ function retrievePlaces() {
   
   var request = {
     bounds: map.getBounds(),
-    types: ["cafe"],
+    types: ["cafe", "restaurant"],
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      //console.log(results);
+      console.log(results);
       
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
         createMarker(place); 
         createListEntry(place)
       }
+    } else {
+      console.log(status);
     }
   });
 }
