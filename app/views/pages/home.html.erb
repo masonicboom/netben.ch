@@ -26,6 +26,15 @@
   <div style="clear: both;"></div>
 </div>
 
+<div id="ranking" class="box">
+  <h2>Fastest cafes</h2>
+  <ol>
+  <% @ranked_cafes.each do |cafe| %>
+    <li><%= link_to cafe.name, cafe %></li>
+  <% end %>
+  </ol>
+</div>
+
 
 <script type="text/javascript">
 

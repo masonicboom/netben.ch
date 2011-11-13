@@ -4,9 +4,10 @@
 
 $map-height: 340px;
 $list-margin: 5px;
+$col-width: 700px;
 
 #main {
-  width: 700px;
+  width: $col-width;
 }
 
 #map {
@@ -38,7 +39,12 @@ $list-margin: 5px;
   }
 }
 
+#ranking {
+  width: $col-width;
+}
+
 .box {
+  margin: 0 0 5ex 0;
 }
 
 #testResults {
