@@ -5,7 +5,6 @@ function retrievePlaces() {
   
   var request = {
     bounds: map.getBounds(),
-    types: ["cafe", "restaurant"],
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
