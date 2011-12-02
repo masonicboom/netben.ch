@@ -4,7 +4,7 @@ function retrievePlaces() {
   $("#cafeList").empty();
   
   var request = {
-    bounds: map.getBounds(),
+    bounds: nearby_map.getBounds(),
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -44,14 +44,14 @@ function createListEntry(place) {
 function createMarker(place) {
   var placeLoc = place.geometry.location;
   var marker = new google.maps.Marker({
-    map: map,
+    map: nearby_map,
     position: place.geometry.location
   });
   markersArray.push(marker);
 
   google.maps.event.addListener(marker, "click", function() {
     infowindow.setContent(place.name);
-    infowindow.open(map, this);
+    infowindow.open(nearby_map, this);
   });
 }
 
