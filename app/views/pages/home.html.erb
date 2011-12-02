@@ -20,20 +20,22 @@
   <input type="text" name="ssid" />
 </div>
 
+<h2>Nearby places</h2>
 <div id="main" class="box">
   <div id="nearby-map"></div>
   <ul id="cafeList"></ul>
   <div style="clear: both;"></div>
 </div>
 
+<h2>Fastest cafes</h2>
 <div id="ranking" class="box">
-  <h2>Fastest cafes</h2>
   <table>
     <thead><tr>
-      <td>Name</td><td>Upload<br/>Mb/s (max)</td><td>Download<br/>Mb/s (max)</td>
+      <td>Rank</td><td>Name</td><td>Upload<br/>Mb/s (max)</td><td>Download<br/>Mb/s (max)</td>
     </tr></thead>
-  <% @ranked_cafes.each do |cafe| %>
+  <% @ranked_cafes.each_with_index do |cafe, index| %>
     <tr>
+      <td><%= index+1 %></td>
       <td><%= link_to cafe.name, cafe %></td>
       <td><%= number_with_precision(cafe.metrics(:upload_mbps).max, :precision => 1) %></td>
       <td><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></td>
@@ -41,6 +43,7 @@
   <% end %>
   </table>
   <div id='fastest-map'></div>
+  <div style="clear: both;"></div>
 </div>
 
 
@@ -52,7 +55,7 @@ var placesService;
 var markersArray = [];
 
 
-function init(position) {
+function init_nearby_map(position) {
   var latitude = position.coords.latitude;
   var longitude = position.coords.longitude;
   var location = new google.maps.LatLng(latitude, longitude);
@@ -78,7 +81,31 @@ function init(position) {
   });
 }
 
-navigator.geolocation.getCurrentPosition(init);
+function init_fastest_map() {
+  var location = new google.maps.LatLng(<%= @fastest_center_latitude %>, <%= @fastest_center_longitude %>);
+  fastest_map = new google.maps.Map(document.getElementById("fastest-map"), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: location,
+    zoom: 12,
+  });
+
+  <% @ranked_cafes.each_with_index do |cafe, index| %>
+    new google.maps.Marker({
+      position: new google.maps.LatLng(<%= cafe.latitude %>, <%= cafe.longitude %>),
+      map: fastest_map,
+      icon: new google.maps.MarkerImage(
+        "<%= asset_path "mapicons/number_#{index+1}.png" %>",
+        new google.maps.Size(32, 37),
+        new google.maps.Point(0,0),
+        new google.maps.Point(0, 32)
+      )
+    });
+  <% end %>
+
+}
+
+navigator.geolocation.getCurrentPosition(init_nearby_map);
+init_fastest_map();
 
 $("#ssid-dialog").dialog({
   modal: true,
