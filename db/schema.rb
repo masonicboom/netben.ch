@@ -11,25 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013172207) do
+ActiveRecord::Schema.define(:version => 20111202193004) do
 
   create_table "cafes", :force => true do |t|
-    t.string   "google_id"
-    t.string   "name"
-    t.decimal  "latitude",   :precision => 15, :scale => 10
-    t.decimal  "longitude",  :precision => 15, :scale => 10
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string    "google_id"
+    t.string    "name"
+    t.decimal   "latitude"
+    t.decimal   "longitude"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
   end
 
+  add_index "cafes", ["latitude"], :name => "index_cafes_on_latitude"
+  add_index "cafes", ["longitude"], :name => "index_cafes_on_longitude"
+
   create_table "test_results", :force => true do |t|
-    t.integer  "cafe_id"
-    t.float    "upload_mbps"
-    t.float    "download_mbps"
-    t.float    "loss_rate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "ssid"
+    t.integer   "cafe_id"
+    t.float     "upload_mbps"
+    t.float     "download_mbps"
+    t.float     "loss_rate"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.string    "ssid"
   end
 
 end
