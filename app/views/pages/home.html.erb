@@ -28,11 +28,18 @@
 
 <div id="ranking" class="box">
   <h2>Fastest cafes</h2>
-  <ol>
+  <table>
+    <thead><tr>
+      <td>Name</td><td>Upload Mb/s (max)</td><td>Download Mb/s (max)</td>
+    </tr></thead>
   <% @ranked_cafes.each do |cafe| %>
-    <li><%= link_to cafe.name, cafe %></li>
+    <tr>
+      <td><%= link_to cafe.name, cafe %></td>
+      <td><%= number_with_precision(cafe.metrics(:upload_mbps).max, :precision => 1) %></td>
+      <td><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></td>
+    </tr>
   <% end %>
-  </ol>
+  </table>
 </div>
 
 

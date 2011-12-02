@@ -7,5 +7,9 @@ class Cafe < ActiveRecord::Base
       tr.upload_mbps * tr.download_mbps
     end.reverse
   end
-  
+
+  def metrics(metric_name)
+    test_results.select(metric_name).map {|r| r[metric_name]}
+  end
+
 end
