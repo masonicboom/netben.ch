@@ -89,16 +89,18 @@ function init_fastest_map() {
     zoom: 12,
   });
 
-  <% @ranked_cafes.each_with_index do |cafe, index| %>
+  <% @ranked_cafes.each_with_index.map do |cafe, index| %>
+    <% rank = index + 1 %>
     new google.maps.Marker({
       position: new google.maps.LatLng(<%= cafe.latitude %>, <%= cafe.longitude %>),
       map: fastest_map,
       icon: new google.maps.MarkerImage(
-        "<%= asset_path "mapicons/number_#{index+1}.png" %>",
+        "<%= asset_path "mapicons/number_#{rank}.png" %>",
         new google.maps.Size(32, 37),
         new google.maps.Point(0,0),
         new google.maps.Point(0, 32)
-      )
+        ),
+      zIndex: <%= @ranked_cafes.length - rank %>,
     });
   <% end %>
 
