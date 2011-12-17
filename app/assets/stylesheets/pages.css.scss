@@ -18,6 +18,10 @@ $col-width: 700px;
   float: left;
 }
 
+#place-search {
+  width: $col-width - 50;
+}
+
 #cafeList {
   margin: $list-margin;
   padding: 0;

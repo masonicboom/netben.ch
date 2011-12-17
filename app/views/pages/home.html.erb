@@ -22,6 +22,11 @@
 
 <h2>Nearby places</h2>
 <div id="main" class="box">
+  <form id="place-search">
+    <label for="name">Place name: </label>
+    <input name="name" type="text" value="cafe"></input>
+    <input type="submit" value="search"></input>
+  </form>
   <div id="nearby-map"></div>
   <ul id="cafeList"></ul>
   <div style="clear: both;"></div>
@@ -56,14 +61,14 @@ var markersArray = [];
 
 
 function init_nearby_map(position) {
-  var latitude = position.coords.latitude;
-  var longitude = position.coords.longitude;
-  var location = new google.maps.LatLng(latitude, longitude);
+  var detectedLatitude = position.coords.latitude;
+  var detectedLongitude = position.coords.longitude;
+  var location = new google.maps.LatLng(<%= @fastest_center_latitude %>, <%= @fastest_center_longitude %>);
   
   nearby_map = new google.maps.Map(document.getElementById("nearby-map"), {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: location,
-    zoom: 16,
+    zoom: 12,
   });
   infowindow = new google.maps.InfoWindow();
   placesService = new google.maps.places.PlacesService(nearby_map);
@@ -121,6 +126,11 @@ $("#ndt-dialog").dialog({
   width: 440,
   title: "Running test...",
   beforeClose: function() { return false; },
+});
+
+$("form#place-search").submit(function() {
+  retrievePlaces();
+  return false;
 });
 
 </script>

@@ -5,6 +5,7 @@ function retrievePlaces() {
   
   var request = {
     bounds: nearby_map.getBounds(),
+    name: $("#place-search>input[type='text']").val(),
   };
   placesService.search(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
