@@ -59,49 +59,31 @@ function createMarker(place) {
 
 // Run the bandwidth and speed test.
 function runTest(place_name, place_latitude, place_longitude, place_google_id) {
-  
-  var NDT = document.applets["NDT"];
   var ssid;
-  
-  // Set up the function to POST results when the applet completes.
-  var waitOrSendResults = function() {
-    var isReady = NDT.isReady();
-    if (isReady == "no") {
-      setTimeout(waitOrSendResults, 50);
-      return;
-    } else if (isReady == "failed") {
-      console.log("Error running NDT applet.");
-    } else if (isReady == "yes") {
-      var uploadMbps = NDT.get_c2sspd();
-      var downloadMbps = NDT.get_s2cspd();
-      var lossRate = NDT.get_loss();
 
-      uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
-      // POST the results.
-      console.log("Done!");
-    } else {
-      console.log("This should never happen.");
-    }
-  }
-
-  // Run the test, as soon as the applet loads.
-  var waitOrRunApplet = function() {
-    if (NDT.run_test === undefined) {
-      setTimeout(waitOrRunApplet, 50);
-      return;
-    }
-
-    NDT.run_test();
-    waitOrSendResults();
-  }
-  
-  function runActualTest(ssid) {
-    $("#ndt-dialog").dialog("option", {
-      open: function(event, ui) {
-        waitOrRunApplet();
-      }
+  /* Times the download of a file with given URL and byte size.
+   * Calls callback with the megabits/second
+   */
+  function timeImageLoad(url, bytes, callback) {
+    var start = new Date().getTime();
+    var tester = $('<img src="' + url + '?' + start + '"/>');
+    tester.load(function(ev) {
+      var millis = ev.timeStamp - start;
+      var megabytes = bytes / 1000000;
+      var megabits = megabytes * 8;
+      var seconds = millis / 1000;
+      callback(megabits/seconds)
     });
-    $("#ndt-dialog").dialog("open");
+    tester.appendTo($('#testers'));
+  }
+
+  function runActualTest(ssid) {
+    timeImageLoad('http://d28bl1s6lzxdrm.cloudfront.net/image.1080056B.bmp', 1080056, function(mbps) {
+      var downloadMbps = mbps;
+      var uploadMbps = null;
+      var lossRate = null;
+      uploadTestResults(place_google_id, place_name, place_latitude, place_longitude, uploadMbps, downloadMbps, lossRate, ssid);
+    });
   }
   
   // First, collect the network's SSID.
@@ -115,7 +97,6 @@ function runTest(place_name, place_latitude, place_longitude, place_google_id) {
     }
   });
   $("#ssid-dialog").dialog("open");
-    
 }
 
 
