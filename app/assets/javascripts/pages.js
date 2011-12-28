@@ -78,7 +78,9 @@ function runTest(place_name, place_latitude, place_longitude, place_google_id) {
   }
 
   function runActualTest(ssid) {
-    timeImageLoad('http://d28bl1s6lzxdrm.cloudfront.net/image.1080056B.bmp', 1080056, function(mbps) {
+    var url = window.location.protocol + '://d28bl1s6lzxdrm.cloudfront.net/image.1080056B.bmp';
+    var bytes = 1080056;
+    timeImageLoad(url, bytes, function(mbps) {
       var downloadMbps = mbps;
       var uploadMbps = null;
       var lossRate = null;
