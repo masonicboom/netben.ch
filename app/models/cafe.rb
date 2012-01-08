@@ -11,7 +11,7 @@ class Cafe < ActiveRecord::Base
   def Cafe::bandwidth_ranked(cafes=Cafe.includes(:test_results).all)
     cafes.sort_by do |cafe|
       tr = cafe.test_results.find(:first, :order => 'upload_mbps * download_mbps DESC')
-      tr.upload_mbps * tr.download_mbps
+      tr.download_mbps
     end.reverse
   end
 

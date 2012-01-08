@@ -33,14 +33,17 @@
 <div id="ranking" class="box">
   <table>
     <thead><tr>
-      <td>Rank</td><td>Name</td><td>Upload<br/>Mb/s (max)</td><td>Download<br/>Mb/s (max)</td>
+      <td>Rank</td>
+      <td>Name</td>
+      <td>Download<br/>Mb/s (max)</td>
+      <td>Upload<br/>Mb/s (max)</td>
     </tr></thead>
   <% @ranked_cafes.each_with_index do |cafe, index| %>
     <tr>
       <td><%= index+1 %></td>
       <td><%= link_to cafe.name, cafe %></td>
-      <td><%= number_with_precision(cafe.metrics(:upload_mbps).max, :precision => 1) %></td>
       <td><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></td>
+      <td><%= number_with_precision(cafe.metrics(:upload_mbps).max, :precision => 1) %></td>
     </tr>
   <% end %>
   </table>
