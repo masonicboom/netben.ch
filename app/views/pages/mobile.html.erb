@@ -13,14 +13,15 @@
 
 <body> 
 
-<div data-role="page" data-fullscreen="true">
+<div data-role="page" data-fullscreen="true" id="discover">
 
-	<div data-role="header">
-		<h1>BandwidthBuzz</h1>
-	</div><!-- /header -->
+  <div data-role="header">
+    <h1>wifiben.ch</h1>
+    <a href="#benchmark" data-icon="check" data-rel="dialog" class="ui-btn-right">Benchmark</a>
+  </div><!-- /header -->
 
-	<div data-role="content">	
-    <div class="content-primary">	
+  <div data-role="content">
+    <div class="content-primary">
       <div id="map" style="width: 100%; height: 200px;"></div>
       <script>
 function init_fastest_map() {
@@ -50,7 +51,7 @@ function init_fastest_map() {
 
 init_fastest_map();
       </script>
-			<ol data-role="listview" style="height: 300px; overflow: scroll;">
+			<ol data-role="listview" data-inset="true" style="height: 100%; overflow: scroll;">
       <% @ranked_cafes.each_with_index do |cafe, index| %>
         <li>
           <%= cafe.name %>
@@ -59,18 +60,129 @@ init_fastest_map();
       <% end %>
       </ol>
     </div>
-	</div><!-- /content -->
-	
-  <div data-role="footer" data-position="fixed">		
-    <div data-role="navbar">
-      <ul>
-        <li><a href="#" data-icon="grid" class="ui-btn-active">Discover</a></li>
-        <li><a href="#" data-icon="check">Benchmark</a></li>
-      </ul>
-    </div><!-- /navbar -->
-  </div><!-- /footer -->
-	
+  </div><!-- /content -->
+
 </div><!-- /page -->
+
+<div data-role="page" id="benchmark">
+
+  <script>
+    $( document ).delegate("#benchmark", "pagecreate", function() {
+      /* Times the download of a file with given URL and byte size.
+       * Calls callback with the megabits/second
+       */
+      function timeImageLoad(url, bytes, callback) {
+        var start = new Date().getTime();
+        var tester = $('<img src="' + url + '?' + start + '"/>');
+        tester.load(function(ev) {
+          var millis = ev.timeStamp - start;
+          var megabytes = bytes / 1000000;
+          var megabits = megabytes * 8;
+          var seconds = millis / 1000;
+          callback(megabits/seconds)
+        });
+        tester.appendTo($('#testers'));
+      }
+
+      var url = window.location.protocol + '//d28bl1s6lzxdrm.cloudfront.net/image.1080056B.bmp';
+      var bytes = 1080056;
+      timeImageLoad(url, bytes, function(mbps) {
+        $('#mbps>input').val(mbps);
+        navigator.geolocation.getCurrentPosition(located);
+      });
+
+      function located(position) {
+        $('#latitude').val(position.coords.latitude);
+        $('#longitude').val(position.coords.longitude);
+
+        var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        var map = new google.maps.Map(document.getElementById('bench-map'), {
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: center,
+          zoom: 18,
+          disableDefaultUI: true,
+          disableDoubleClickZoom: true,
+          draggable: false,
+        });
+
+        var options = {
+          bounds: new google.maps.Circle({ center: center, radius: position.coords.accuracy }).getBounds(),
+          types: ['establishment']
+        }
+        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('name'), options);
+
+        var infowindow = new google.maps.InfoWindow();
+        var marker = new google.maps.Marker({
+          map: map
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+
+          $('#name').val(place.name);
+          $('#google_id').val(place.id);
+
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+          }
+          var image = new google.maps.MarkerImage(
+              place.icon, new google.maps.Size(71, 71),
+              new google.maps.Point(0, 0), new google.maps.Point(17, 34),
+              new google.maps.Size(35, 35));
+          marker.setIcon(image);
+          marker.setPosition(place.geometry.location);
+        });
+
+      }
+    });
+  </script>
+
+  <div data-role="header">
+    <h1>wifiben.ch</h1>
+  </div><!-- /header -->
+
+  <div data-role="content">	
+    <div class="content-primary">
+      <form id="testResults" action="/tests" method="POST">
+        <ul data-role="listview">
+          <li data-role="fieldcontain" id="mbps">
+            <label for="test_result[download_mbps]">Download Mbps</label>
+            <input type="text" name="test_result[download_mbps]" value="Measuring..." readonly />
+          </li>
+          <li data-role="fieldcontain">
+            <label for="cafe[latitude]">Latitude</label>
+            <input type="text" name="cafe[latitude]" id="latitude" value="Locating..." readonly />
+          </li>
+          <li data-role="fieldcontain">
+            <label for="cafe[longitude]">Longitude</label>
+            <input type="text" name="cafe[longitude]" id="longitude" value="" readonly />
+          </li>
+          <li data-role="fieldcontain">
+            <input type="hidden" name="cafe[google_id]" id="google_id" value="" />
+            <label for="cafe[name]">Name</label>
+            <input type="search" name="cafe[name]" id="name" value="" />
+          </li>
+          <li data-role="fieldcontain" id="bench-map" style="height: 150px;">
+          </li>
+          <li data-role="fieldcontain">
+            <label for="test_result[ssid]">SSID</label>
+            <input type="text" name="test_result[ssid]" value="" />
+          </li>
+          <li data-role="fieldcontain">
+            <button type="submit">Report</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div><!-- /content -->
+
+</div><!-- /page -->
+
+
 
 </body>
 </html>
