@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>BandwidthBuzz</title> 
+	<link rel="stylesheet" href="//code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script src="//code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+  <%= javascript_include_tag "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true" %>
+</head> 
+
+<body> 
+
+<div data-role="page" data-fullscreen="true">
+
+	<div data-role="header">
+		<h1>BandwidthBuzz</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+    <div class="content-primary">	
+      <div id="map" style="width: 100%; height: 200px;"></div>
+      <script>
+function init_fastest_map() {
+  var location = new google.maps.LatLng(<%= @fastest_center_latitude %>, <%= @fastest_center_longitude %>);
+  fastest_map = new google.maps.Map(document.getElementById("map"), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: location,
+    zoom: 12,
+  });
+
+  <% @ranked_cafes.each_with_index.map do |cafe, index| %>
+    <% rank = index + 1 %>
+    new google.maps.Marker({
+      position: new google.maps.LatLng(<%= cafe.latitude %>, <%= cafe.longitude %>),
+      map: fastest_map,
+      icon: new google.maps.MarkerImage(
+        "<%= asset_path "mapicons/number_#{rank}.png" %>",
+        new google.maps.Size(32, 37),
+        new google.maps.Point(0,0),
+        new google.maps.Point(0, 32)
+        ),
+      zIndex: <%= @ranked_cafes.length - rank %>,
+    });
+  <% end %>
+
+}
+
+init_fastest_map();
+      </script>
+			<ol data-role="listview" style="height: 300px; overflow: scroll;">
+      <% @ranked_cafes.each_with_index do |cafe, index| %>
+        <li>
+          <%= cafe.name %>
+          <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></p>
+        </li>
+      <% end %>
+      </ol>
+    </div>
+	</div><!-- /content -->
+	
+  <div data-role="footer" data-position="fixed">		
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#" data-icon="grid" class="ui-btn-active">Discover</a></li>
+        <li><a href="#" data-icon="check">Benchmark</a></li>
+      </ul>
+    </div><!-- /navbar -->
+  </div><!-- /footer -->
+	
+</div><!-- /page -->
+
+</body>
+</html>
+
