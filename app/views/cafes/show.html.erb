@@ -1,49 +1,58 @@
-<h1><%= @cafe.name %></h1>
+<div data-role="page" data-fullscreen="true" id="discover">
 
-<div id="map"></div>
-<script type="text/javascript">
+  <div data-role="header">
+    <a href="/" data-icon="home">Home</a>
+    <h2><%= @cafe.name %></h2>
+  </div><!-- /header -->
 
-$(document).ready(function() {
-  initMap();
-});
+  <div data-role="content">
+    <div class="content-primary">
+      <div id="map" style="width: 100%; height: 150px;"></div>
 
-function initMap() {
-  var latitude = <%= @cafe.latitude %>;
-  var longitude = <%= @cafe.longitude %>;
-  var location = new google.maps.LatLng(latitude, longitude);
+      <script type="text/javascript">
 
-  map = new google.maps.Map(document.getElementById("map"), {
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center: location,
-    zoom: 16,
-    draggable: false,
-  });
+      $(document).ready(function() {
+        initMap();
+      });
 
-  var marker = new google.maps.Marker({
-    map: map,
-    position: location
-  });
-}
+      function initMap() {
+        var latitude = <%= @cafe.latitude %>;
+        var longitude = <%= @cafe.longitude %>;
+        var location = new google.maps.LatLng(latitude, longitude);
 
-</script>
+        map = new google.maps.Map(document.getElementById("map"), {
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: location,
+          zoom: 16,
+          draggable: false,
+        });
 
-<table>
-  <thead>
-    <tr>
-      <td>Recorded</td>
-      <td>SSID (Network)</td>
-      <td>Upload Mbps</td>
-      <td>Download Mbps</td>
-      <td>Packet loss %</td>
-    </tr>
-  </thead>
-  <% @cafe.test_results.find(:all, :order => "created_at desc").each do |result| %>
-  <tr>
-    <td><%= time_ago_in_words result.created_at %> ago</td>
-    <td><%= result.ssid %></td>
-    <td><%= number_with_precision result.upload_mbps, :precision => 2 %></td>
-    <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
-    <td><%= number_to_percentage result.loss_rate %></td>
-  </tr>
-  <% end %>
-</table>
+        var marker = new google.maps.Marker({
+          map: map,
+          position: location
+        });
+      }
+
+      </script>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Recorded</td>
+            <td>SSID (Network)</td>
+            <td>Download Mbps</td>
+          </tr>
+        </thead>
+        <% @cafe.test_results.find(:all, :order => "created_at desc").each do |result| %>
+        <tr>
+          <td><%= time_ago_in_words result.created_at %> ago</td>
+          <td><%= result.ssid %></td>
+          <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
+        </tr>
+        <% end %>
+      </table>
+
+    </div>
+  </div><!-- /content -->
+
+</div><!-- /page -->
