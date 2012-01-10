@@ -10,7 +10,7 @@ class Place < ActiveRecord::Base
 
   def Place::bandwidth_ranked(places=Place.includes(:benches).all)
     places.sort_by do |place|
-      tr = place.benches.find(:first, :order => 'upload_mbps * download_mbps DESC')
+      tr = place.benches.find(:first, :order => 'download_mbps DESC')
       tr.download_mbps
     end.reverse
   end
