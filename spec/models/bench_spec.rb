@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe TestResult do
+describe Bench do
   
   it 'should have a working factory' do
-    Factory.create(:test_result)
+    Factory.create(:bench)
   end
       
 end

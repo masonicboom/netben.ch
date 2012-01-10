@@ -2,7 +2,7 @@
 
   <div data-role="header">
     <a href="/" data-icon="home">Home</a>
-    <h2><%= @cafe.name %></h2>
+    <h2><%= @place.name %></h2>
   </div><!-- /header -->
 
   <div data-role="content">
@@ -16,8 +16,8 @@
       });
 
       function initMap() {
-        var latitude = <%= @cafe.latitude %>;
-        var longitude = <%= @cafe.longitude %>;
+        var latitude = <%= @place.latitude %>;
+        var longitude = <%= @place.longitude %>;
         var location = new google.maps.LatLng(latitude, longitude);
 
         map = new google.maps.Map(document.getElementById("map"), {
@@ -36,7 +36,7 @@
       </script>
 
 			<ul data-role="listview" data-inset="true">
-        <% @cafe.test_results.find(:all, :order => "created_at desc").each do |result| %>
+        <% @place.benches.find(:all, :order => "created_at desc").each do |result| %>
         <li>
           <%= time_ago_in_words result.created_at %> ago
           <p class="ui-li-aside"><%= number_with_precision result.download_mbps, :precision => 2 %> Mbits/s</p>

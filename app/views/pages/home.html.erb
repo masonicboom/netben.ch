@@ -17,10 +17,10 @@ function init_fastest_map() {
     zoom: 12,
   });
 
-  <% @ranked_cafes.each_with_index.map do |cafe, index| %>
+  <% @rankings.each_with_index.map do |place, index| %>
     <% rank = index + 1 %>
     new google.maps.Marker({
-      position: new google.maps.LatLng(<%= cafe.latitude %>, <%= cafe.longitude %>),
+      position: new google.maps.LatLng(<%= place.latitude %>, <%= place.longitude %>),
       map: fastest_map,
       icon: new google.maps.MarkerImage(
         "<%= asset_path "mapicons/number_#{rank}.png" %>",
@@ -28,7 +28,7 @@ function init_fastest_map() {
         new google.maps.Point(0,0),
         new google.maps.Point(0, 32)
         ),
-      zIndex: <%= @ranked_cafes.length - rank %>,
+      zIndex: <%= @rankings.length - rank %>,
     });
   <% end %>
 
@@ -39,11 +39,11 @@ function init_fastest_map() {
         });
       </script>
 			<ol data-role="listview" data-inset="true" style="height: 100%; overflow: scroll;">
-      <% @ranked_cafes.each_with_index do |cafe, index| %>
+      <% @rankings.each_with_index do |place, index| %>
         <li>
-          <a href="/cafes/<%= cafe.id %>">
-            <%= cafe.name %>
-            <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %> Mbits/s</p>
+          <a href="<%= url_for(place) %>">
+            <%= place.name %>
+            <p class="ui-li-aside"><%= number_with_precision(place.metrics(:download_mbps).max, :precision => 1) %> Mbits/s</p>
           </a>
         </li>
       <% end %>
@@ -136,30 +136,30 @@ function init_fastest_map() {
 
   <div data-role="content">	
     <div class="content-primary">
-      <form id="testResults" action="/tests" method="POST">
+      <form id="benchmark" action="/benchmarks" method="POST">
         <ul data-role="listview">
           <li data-role="fieldcontain" id="mbps">
-            <label for="test_result[download_mbps]">Download Mbps</label>
-            <input type="text" name="test_result[download_mbps]" value="Measuring..." readonly />
+            <label for="benchmark[download_mbps]">Download Mbps</label>
+            <input type="text" name="benchmark[download_mbps]" value="Measuring..." readonly />
           </li>
           <li data-role="fieldcontain">
-            <label for="cafe[latitude]">Latitude</label>
-            <input type="text" name="cafe[latitude]" id="latitude" value="Locating..." readonly />
+            <label for="place[latitude]">Latitude</label>
+            <input type="text" name="place[latitude]" id="latitude" value="Locating..." readonly />
           </li>
           <li data-role="fieldcontain">
-            <label for="cafe[longitude]">Longitude</label>
-            <input type="text" name="cafe[longitude]" id="longitude" value="" readonly />
+            <label for="place[longitude]">Longitude</label>
+            <input type="text" name="place[longitude]" id="longitude" value="" readonly />
           </li>
           <li data-role="fieldcontain">
-            <input type="hidden" name="cafe[google_id]" id="google_id" value="" />
-            <label for="cafe[name]">Name</label>
-            <input type="search" name="cafe[name]" id="name" value="" />
+            <input type="hidden" name="place[google_id]" id="google_id" value="" />
+            <label for="place[name]">Name</label>
+            <input type="search" name="place[name]" id="name" value="" />
           </li>
           <li data-role="fieldcontain" id="bench-map" style="height: 150px;">
           </li>
           <li data-role="fieldcontain">
-            <label for="test_result[ssid]">SSID</label>
-            <input type="text" name="test_result[ssid]" value="" />
+            <label for="benchmark[ssid]">SSID</label>
+            <input type="text" name="benchmark[ssid]" value="" />
           </li>
           <li data-role="fieldcontain">
             <button type="submit">Report</button>

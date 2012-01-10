@@ -11,9 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111202193004) do
+ActiveRecord::Schema.define(:version => 20120110070841) do
 
-  create_table "cafes", :force => true do |t|
+  create_table "benches", :force => true do |t|
+    t.integer  "place_id"
+    t.float    "upload_mbps"
+    t.float    "download_mbps"
+    t.float    "loss_rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ssid"
+  end
+
+  create_table "places", :force => true do |t|
     t.string    "google_id"
     t.string    "name"
     t.decimal   "latitude"
@@ -22,17 +32,7 @@ ActiveRecord::Schema.define(:version => 20111202193004) do
     t.timestamp "updated_at"
   end
 
-  add_index "cafes", ["latitude"], :name => "index_cafes_on_latitude"
-  add_index "cafes", ["longitude"], :name => "index_cafes_on_longitude"
-
-  create_table "test_results", :force => true do |t|
-    t.integer   "cafe_id"
-    t.float     "upload_mbps"
-    t.float     "download_mbps"
-    t.float     "loss_rate"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "ssid"
-  end
+  add_index "places", ["latitude"], :name => "index_cafes_on_latitude"
+  add_index "places", ["longitude"], :name => "index_cafes_on_longitude"
 
 end

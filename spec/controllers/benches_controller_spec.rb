@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe TestsController do
+describe BenchesController do
   
   describe :create do
     
     VALID_PARAMS = {
-      :test_result => {
+      :bench => {
         :download_mbps => 6.3,
         :ssid => 'linksys',
       },
-      :cafe => {
+      :place => {
         :google_id => '21341290ag93F',
         :name => 'Coffee House',
         :latitude => 37.7489,
@@ -19,31 +19,31 @@ describe TestsController do
     
     it 'should fail without download_mbps' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:test_result][:download_mbps] = nil
+      params[:bench][:download_mbps] = nil
       lambda do
         post :create, params
       end.should raise_error
     end
     
-    it 'should fail without cafe name' do
+    it 'should fail without place name' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:cafe][:name] = nil
+      params[:place][:name] = nil
       lambda do
         post :create, params
       end.should raise_error
     end
     
-    it 'should fail without cafe latitude' do
+    it 'should fail without place latitude' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:cafe][:latitude] = nil
+      params[:place][:latitude] = nil
       lambda do
         post :create, params
       end.should raise_error
     end
     
-    it 'should fail without cafe longitude' do
+    it 'should fail without place longitude' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:cafe][:longitude] = nil
+      params[:place][:longitude] = nil
       lambda do
         post :create, params
       end.should raise_error
@@ -51,7 +51,7 @@ describe TestsController do
     
     it 'should fail without SSID' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:test_result][:ssid] = nil
+      params[:bench][:ssid] = nil
       lambda do
         post :create, params
       end.should raise_error
@@ -59,48 +59,48 @@ describe TestsController do
     
     context 'with valid params, ' do
       
-      context 'when the specified Cafe is not in the database yet, ' do
+      context 'when the specified place is not in the database yet, ' do
         
         before(:each) do
-          cafes = Cafe.find_by_google_id(VALID_PARAMS[:cafe][:google_id])
-          cafes.destroy_all unless cafes.nil?
+          places = Place.find_by_google_id(VALID_PARAMS[:place][:google_id])
+          places.destroy_all unless places.nil?
         end
         
-        it 'should create a Cafe in the database' do
+        it 'should create a place in the database' do
           lambda do
             post :create, VALID_PARAMS
-          end.should change(Cafe, :count).by(1)
+          end.should change(Place, :count).by(1)
         end
         
-        it 'should make a new TestResult record' do
+        it 'should make a new bench record' do
           lambda do
             post :create, VALID_PARAMS
-          end.should change(TestResult, :count).by(1)
+          end.should change(Bench, :count).by(1)
         end
         
-        it 'should redirect to that new Cafe page' do
+        it 'should redirect to that new place page' do
           post :create, VALID_PARAMS
-          cafe = Cafe.find_by_google_id(VALID_PARAMS[:cafe][:google_id])
-          response.should redirect_to(cafe)
+          place = Place.find_by_google_id(VALID_PARAMS[:place][:google_id])
+          response.should redirect_to(place)
         end
         
       end
       
-      context 'when the specified Cafe is in the database, ' do
+      context 'when the specified place is in the database, ' do
         
         before(:each) do
-          @cafe = Factory.create(:cafe, :google_id => VALID_PARAMS[:cafe][:google_id], :name => VALID_PARAMS[:cafe][:name])
+          @place = Factory.create(:place, :google_id => VALID_PARAMS[:place][:google_id], :name => VALID_PARAMS[:place][:name])
         end
         
-        it 'should make a new TestResult record' do
+        it 'should make a new bench record' do
           lambda do
             post :create, VALID_PARAMS
-          end.should change(TestResult, :count).by(1)
+          end.should change(Bench, :count).by(1)
         end
         
-        it 'should redirect to that Cafe page' do
+        it 'should redirect to that place page' do
           post :create, VALID_PARAMS
-          response.should redirect_to(@cafe)
+          response.should redirect_to(@place)
         end
         
       end
