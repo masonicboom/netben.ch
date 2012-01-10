@@ -6,9 +6,7 @@ describe TestsController do
     
     VALID_PARAMS = {
       :test_result => {
-        :upload_mbps => 3.4,
         :download_mbps => 6.3,
-        :loss_rate => 0.13,
         :ssid => 'linksys',
       },
       :cafe => {
@@ -19,33 +17,9 @@ describe TestsController do
       },
     }
     
-    it 'should fail without upload_mbps' do
-      params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:test_result][:upload_mbps] = nil
-      lambda do
-        post :create, params
-      end.should raise_error
-    end
-    
     it 'should fail without download_mbps' do
       params = Marshal.load(Marshal.dump(VALID_PARAMS))
       params[:test_result][:download_mbps] = nil
-      lambda do
-        post :create, params
-      end.should raise_error
-    end
-    
-    it 'should fail without loss_rate' do
-      params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:test_result][:loss_rate] = nil
-      lambda do
-        post :create, params
-      end.should raise_error
-    end
-    
-    it 'should fail without cafe google_id' do
-      params = Marshal.load(Marshal.dump(VALID_PARAMS))
-      params[:cafe][:google_id] = nil
       lambda do
         post :create, params
       end.should raise_error
