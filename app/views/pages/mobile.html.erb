@@ -41,8 +41,10 @@ function init_fastest_map() {
 			<ol data-role="listview" data-inset="true" style="height: 100%; overflow: scroll;">
       <% @ranked_cafes.each_with_index do |cafe, index| %>
         <li>
-          <%= cafe.name %>
-          <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></p>
+          <a href="/cafes/<%= cafe.id %>">
+            <%= cafe.name %>
+            <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></p>
+          </a>
         </li>
       <% end %>
       </ol>
