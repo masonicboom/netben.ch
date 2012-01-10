@@ -7,11 +7,11 @@
 
   <div data-role="content">
     <div class="content-primary">
-      <div id="map" style="width: 100%; height: 200px;"></div>
+      <div id="fastest-map" style="width: 100%; height: 200px;"></div>
       <script>
 function init_fastest_map() {
   var location = new google.maps.LatLng(<%= @fastest_center_latitude %>, <%= @fastest_center_longitude %>);
-  fastest_map = new google.maps.Map(document.getElementById("map"), {
+  fastest_map = new google.maps.Map(document.getElementById("fastest-map"), {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: location,
     zoom: 12,
@@ -34,7 +34,9 @@ function init_fastest_map() {
 
 }
 
-init_fastest_map();
+        $( document ).delegate("#discover", "pagecreate", function() {
+          init_fastest_map();
+        });
       </script>
 			<ol data-role="listview" data-inset="true" style="height: 100%; overflow: scroll;">
       <% @ranked_cafes.each_with_index do |cafe, index| %>
