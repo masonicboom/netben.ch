@@ -35,22 +35,14 @@
 
       </script>
 
-      <table>
-        <thead>
-          <tr>
-            <td>Recorded</td>
-            <td>SSID (Network)</td>
-            <td>Download Mbps</td>
-          </tr>
-        </thead>
+			<ul data-role="listview" data-inset="true">
         <% @cafe.test_results.find(:all, :order => "created_at desc").each do |result| %>
-        <tr>
-          <td><%= time_ago_in_words result.created_at %> ago</td>
-          <td><%= result.ssid %></td>
-          <td><%= number_with_precision result.download_mbps, :precision => 2 %></td>
-        </tr>
+        <li>
+          <%= time_ago_in_words result.created_at %> ago
+          <p class="ui-li-aside"><%= number_with_precision result.download_mbps, :precision => 2 %> Mbits/s</p>
+        </li>
         <% end %>
-      </table>
+      </ul>
 
     </div>
   </div><!-- /content -->

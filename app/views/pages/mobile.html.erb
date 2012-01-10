@@ -43,7 +43,7 @@ function init_fastest_map() {
         <li>
           <a href="/cafes/<%= cafe.id %>">
             <%= cafe.name %>
-            <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %></p>
+            <p class="ui-li-aside"><%= number_with_precision(cafe.metrics(:download_mbps).max, :precision => 1) %> Mbits/s</p>
           </a>
         </li>
       <% end %>
